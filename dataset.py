@@ -23,11 +23,9 @@ class MnistDataModule(pl.LightningDataModule):
         entire_dataset = datasets.MNIST(
             root=self.data_dir,
             train=True,
-            transform=transforms.Compose([
-                transforms.ToTensor(),
-                RandomHorizontalFlip(),
-                RandomVerticalFlip()
-            ]),
+            transform=transforms.Compose(
+                [transforms.ToTensor(), RandomHorizontalFlip(), RandomVerticalFlip()]
+            ),
             download=False,
         )
         self.train_ds, self.val_ds = random_split(entire_dataset, [50000, 10000])

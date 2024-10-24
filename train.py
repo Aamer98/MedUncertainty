@@ -8,14 +8,14 @@ from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning.profilers import PyTorchProfiler
 from pytorch_lightning.strategies import DeepSpeedStrategy
 
-torch.set_float32_matmul_precision('medium')
+torch.set_float32_matmul_precision("medium")
 
 if __name__ == "__main__":
     logger = TensorBoardLogger("tb_logs", name="mnist_model_v0")
     strategy = DeepSpeedStrategy()
     profiler = PyTorchProfiler(
         on_trace=torch.profiler.tensorboard_trace_handler("tb_logs/profiler0"),
-        schedule=torch.profiler.schedule(skip_first=10, wait=1, warmup=1, active=20)
+        schedule=torch.profiler.schedule(skip_first=10, wait=1, warmup=1, active=20),
     )
     model = NN(input_size=config.INPUT_SIZE, num_classes=config.NUM_CLASSES)
     dm = MnistDataModule(
@@ -25,7 +25,7 @@ if __name__ == "__main__":
     )
     trainer = pl.Trainer(
         strategy=strategy,
-        profiler='simple',
+        profiler="simple",
         logger=logger,
         accelerator="gpu",
         devices=1,

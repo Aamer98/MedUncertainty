@@ -29,11 +29,11 @@ class NN(pl.LightningModule):
         self.log_dict(
             {
                 "train_acc": self.accuracy(scores, y),
-                "train_f1": self.f1_score(scores, y)
+                "train_f1": self.f1_score(scores, y),
             },
             on_step=False,
             on_epoch=True,
-            prog_bar=True
+            prog_bar=True,
         )
 
     def training_step(self, batch, batch_idx):
@@ -55,10 +55,10 @@ class NN(pl.LightningModule):
 
         if batch_idx % 100 == 0:
             x = x[:8]
-            grid = torchvision.utils.make_grid(x.view(-1,1,28,28))
+            grid = torchvision.utils.make_grid(x.view(-1, 1, 28, 28))
             self.logger.experiment.add_image("mnist_images", grid, 0)
 
-        return {'loss': loss, 'scores': scores, 'y':y}
+        return {"loss": loss, "scores": scores, "y": y}
 
     def validation_step(self, batch, batch_idx):
         loss, scores, y = self._common_step(batch, batch_idx)
